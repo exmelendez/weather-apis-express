@@ -1,0 +1,34 @@
+{
+  "name": "prac",
+  "version": "1.0.0",
+  "description": "Sample/tutorial app presented by The Coding Train on YouTube",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sample",
+    "example",
+    "coding",
+    "train",
+    "node",
+    "js",
+    "selfie",
+    "data",
+    "javascript",
+    "express",
+    "terminal",
+    "console",
+    "app",
+    "web",
+    "dev",
+    "development",
+    "learning",
+    "self"
+  ],
+  "author": "Eddie M.",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
