@@ -1,4 +1,4 @@
-let lat, lon;
+let lat, lon, weather, air, locale;
 const summaryPara = document.querySelectorAll('p')[1];
 const displayPara = () => {
   summaryPara.style.visibility = 'visible';
@@ -11,47 +11,43 @@ if("geolocation" in navigator) {
 
   try {
 
-  lat = position.coords.latitude;
-  lon = position.coords.longitude;
-  document.getElementById('latitude').textContent = lat.toFixed(2);
-  document.getElementById('longitude').textContent = lon.toFixed(2);
+    lat = position.coords.latitude.toFixed(2);
+    lon = position.coords.longitude.toFixed(2);
+    document.getElementById('latitude').textContent = lat;
+    document.getElementById('longitude').textContent = lon;
 
-  const api_url = `weather/${lat},${lon}`;
-  const response = await fetch(api_url);
-  const json = await response.json();
-  const timeZone = json.weather.timezone.split('/');
-  const location = timeZone[1];
-  const air = json.air_quality.results[0].measurements[0];
+    const api_url = `weather/${lat},${lon}`;
+    const response = await fetch(api_url);
+    const json = await response.json();
+    weather = json.weather.currently;
+    air = json.air_quality.results[0].measurements[0];
+    const timeZone = json.weather.timezone.split('/');
+    locale = timeZone[1];
 
-  /* Weather HTML elements */
-  document.getElementById('location').textContent = location;
-  document.getElementById('summary').textContent = json.weather.currently.summary;
-  document.getElementById('temperature').textContent = json.weather.currently.temperature;
+    /* Weather HTML elements */
+    document.getElementById('location').textContent = locale;
+    document.getElementById('summary').textContent = weather.summary;
+    document.getElementById('temperature').textContent = weather.temperature;
 
-  /* Air quality HTML elements */
-  document.getElementById('aq_parameter').textContent = air.parameter;
-  document.getElementById('aq_value').textContent = air.value;
-  document.getElementById('aq_units').textContent = air.unit;
-  document.getElementById('aq_date').textContent = air.lastUpdated;
+    /* Air quality HTML elements */
+    document.getElementById('aq_parameter').textContent = air.parameter;
+    document.getElementById('aq_value').textContent = air.value;
+    document.getElementById('aq_units').textContent = air.unit;
+    document.getElementById('aq_date').textContent = air.lastUpdated;
 
-  await displayPara();
-  console.log(json);
+    await displayPara();
+
 } catch (error) {
     document.getElementById('aq_value').textContent = 'NO READING';
-    // console.log('Something went wrong!');
-}
-  });
-} else {
-  console.log('geolocation not available');
+    console.log('Something went wrong!');
 }
 
-const btn = document.querySelector('button');
-const textInput = document.getElementById('inp');
-
-const logData = async() => {
   const data = {
     lat,
-    lon
+    lon,
+    weather,
+    air,
+    locale
   };
 
   const options = {
@@ -62,9 +58,11 @@ const logData = async() => {
     body: JSON.stringify(data)
   };
 
-  const response = await fetch('/api', options); //await will wait until the promise returns/completes before executing
-  const json = await response.json();
-  console.log(json);
-};
+  const db_response = await fetch('/api', options); //await will wait until the promise returns/completes before executing
+  const db_json = await db_response.json();
+  console.log(db_json);
+  });
 
-btn.addEventListener('click', logData);
+} else {
+  console.log('geolocation not available');
+}

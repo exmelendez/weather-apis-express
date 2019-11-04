@@ -6,3 +6,8 @@ p {
 .summary-p {
   visibility: hidden;
 }
+
+#checkinMap {
+  height: 240px;
+  margin: 8px 0px;
+}
