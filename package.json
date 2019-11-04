@@ -1,5 +1,5 @@
 {
-  "name": "prac",
+  "name": "weather API",
   "version": "1.0.0",
   "description": "Sample/tutorial app presented by The Coding Train on YouTube",
   "main": "index.js",
@@ -13,7 +13,6 @@
     "train",
     "node",
     "js",
-    "selfie",
     "data",
     "javascript",
     "express",
@@ -30,6 +29,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "nedb": "^1.8.0"
+    "nedb": "^1.8.0",
+    "node-fetch": "^2.6.0"
   }
 }

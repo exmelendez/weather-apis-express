@@ -1,56 +1,70 @@
-//Setup function is needed for the P5JS library
-function setup() {
-  noCanvas(); //P5 is primarily used for drawing/canvas, but it is not needed for this project.
-  const video = createCapture(VIDEO); // P5 video/capture variable
-  video.size(160, 120); //resizing as it is naturally very large.
+let lat, lon;
+const summaryPara = document.querySelectorAll('p')[1];
+const displayPara = () => {
+  summaryPara.style.visibility = 'visible';
+};
 
-  const btn = document.querySelector('button');
-  const textInput = document.getElementById('inp');
+if("geolocation" in navigator) {
+  console.log('geolocation available');
 
-  const clearTextInput = () => {
-    textInput.value = "";
-  };
+  navigator.geolocation.getCurrentPosition(async position => {
 
-  const getLocation = () => {
+  try {
 
-    if("geolocation" in navigator) {
-        console.log('geolocation available');
+  lat = position.coords.latitude;
+  lon = position.coords.longitude;
+  document.getElementById('latitude').textContent = lat.toFixed(2);
+  document.getElementById('longitude').textContent = lon.toFixed(2);
 
-        navigator.geolocation.getCurrentPosition(async position => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          document.getElementById('latitude').textContent = lat;
-          document.getElementById('longitude').textContent = lon;
+  const api_url = `weather/${lat},${lon}`;
+  const response = await fetch(api_url);
+  const json = await response.json();
+  const timeZone = json.weather.timezone.split('/');
+  const location = timeZone[1];
+  const air = json.air_quality.results[0].measurements[0];
 
-          video.loadPixels(); //Lets P5 know that a canvas is needed. Takes video element, load pixels onto a canvas so it can then be converted into Base64.
-          const image64 = video.canvas.toDataURL();
+  /* Weather HTML elements */
+  document.getElementById('location').textContent = location;
+  document.getElementById('summary').textContent = json.weather.currently.summary;
+  document.getElementById('temperature').textContent = json.weather.currently.temperature;
 
-          const data = {
-            lat,
-            lon,
-            mood: textInput.value,
-            image64
-          };
+  /* Air quality HTML elements */
+  document.getElementById('aq_parameter').textContent = air.parameter;
+  document.getElementById('aq_value').textContent = air.value;
+  document.getElementById('aq_units').textContent = air.unit;
+  document.getElementById('aq_date').textContent = air.lastUpdated;
 
-          const options = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          };
-
-          const response = await fetch('/api', options); //await will wait until the promise returns/completes before executing
-          const json = await response.json();
-          console.log(json);
-
-          await clearTextInput();
-        });
-
-    } else {
-        console.log('geolocation not available');
-    }
-  };
-
-  btn.addEventListener('click', getLocation);
+  await displayPara();
+  console.log(json);
+} catch (error) {
+    document.getElementById('aq_value').textContent = 'NO READING';
+    // console.log('Something went wrong!');
 }
+  });
+} else {
+  console.log('geolocation not available');
+}
+
+const btn = document.querySelector('button');
+const textInput = document.getElementById('inp');
+
+const logData = async() => {
+  const data = {
+    lat,
+    lon
+  };
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  };
+
+  const response = await fetch('/api', options); //await will wait until the promise returns/completes before executing
+  const json = await response.json();
+  console.log(json);
+};
+
+btn.addEventListener('click', logData);

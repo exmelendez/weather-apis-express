@@ -11,17 +11,20 @@
 </head>
 <body>
 
-    <h1>Data Selfie APP</h1>
+    <h1>The Weather Here</h1>
 
-    <a href="/">enter</a> | <a href="/logs">list</a>
+    <a href="/">check in</a> | <a href="/logs">view checkins</a>
 
     <p>Latitude: <span id="latitude"></span>&deg;<br>
        Longitude: <span id="longitude"></span>&deg;
     </p>
 
-  <label for="inp">Enter Mood</label>
-  <input id="inp" type="text">
-  <button>Submit</button>
+    <p class="summary-p">
+      The weather here in <span id="location"></span> is <span id="summary"></span> with a temperature of <span id="temperature"></span> &deg; F.
+      The concentration of particulate matter (<span id="aq_parameter"></span>) is <span id="aq_value"></span> <span id="aq_units"></span> last read on <span id="aq_date"></span>.
+    </p>
+
+  <button>check in</button>
 
   <script src="sketch.js"></script>
 
