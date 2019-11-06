@@ -20,7 +20,6 @@ if("geolocation" in navigator) {
     const response = await fetch(api_url);
     const json = await response.json();
     weather = json.weather.currently;
-    air = json.air_quality.results[0].measurements[0];
     const timeZone = json.weather.timezone.split('/');
     locale = timeZone[1];
 
@@ -29,18 +28,29 @@ if("geolocation" in navigator) {
     document.getElementById('summary').textContent = weather.summary;
     document.getElementById('temperature').textContent = weather.temperature;
 
-    /* Air quality HTML elements */
-    document.getElementById('aq_parameter').textContent = air.parameter;
-    document.getElementById('aq_value').textContent = air.value;
-    document.getElementById('aq_units').textContent = air.unit;
-    document.getElementById('aq_date').textContent = air.lastUpdated;
+    if(json.air_quality.results.length > 0) {
+      air = json.air_quality.results[0].measurements[0];
 
-    await displayPara();
+      /* Air quality HTML elements */
+      /*
+      document.getElementById('aq_parameter').textContent = air.parameter;
+      document.getElementById('aq_value').textContent = air.value;
+      document.getElementById('aq_units').textContent = air.unit;
+      document.getElementById('aq_date').textContent = air.lastUpdated;
+      */
+
+      document.getElementById('aq-results').textContent = `The concentration of particulate matter (${air.parameter}) is ${air.value} ${air.unit} last read on ${air.lastUpdated}`;
+    } else {
+      throw 'no air quality results obtained from API';
+    }
 
 } catch (error) {
-    document.getElementById('aq_value').textContent = 'NO READING';
-    console.log('Something went wrong!');
+    console.error(error);
+    air = {  value: -1 };
+    document.getElementById('aq-results').textContent = 'No air quality reading';
 }
+
+  await displayPara();
 
   const data = {
     lat,

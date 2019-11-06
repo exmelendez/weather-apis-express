@@ -13,9 +13,15 @@ async function getData() {
   for (item of data) {
     const marker = await L.marker([item.lat, item.lon]).addTo(mymap);
 
-    const txt = await `The weather here in ${item.locale} is ${item.weather.summary} with a temperature of ${item.weather.temperature}° F. The concentration of particulate matter (${item.air.parameter}) is ${item.air.value} ${item.air.unit} last read on ${item.air.lastUpdated}.`;
+    let txt = await `The weather here in ${item.locale} is ${item.weather.summary} with a temperature of ${item.weather.temperature}° F.`;
 
-    marker.bindPopup(txt);
+    if(item.air.value < 0) {
+      txt += ' No air quality reading.';
+    } else {
+      txt += ` The concentration of particulate matter (${item.air.parameter}) is ${item.air.value} ${item.air.unit} last read on ${item.air.lastUpdated}.`
+    }
+
+    marker.bindPopup(txt); //Leaflet.js function that binds some text or info to a popup.
   }
   console.log(data);
 }

@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script> -->
-    <title>Document</title>
+    <title>Weather Here | Check-ins</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -19,9 +17,15 @@
        Longitude: <span id="longitude"></span>&deg;
     </p>
 
+<!--
     <p class="summary-p">
       The weather here in <span id="location"></span> is <span id="summary"></span> with a temperature of <span id="temperature"></span> &deg; F.
       The concentration of particulate matter (<span id="aq_parameter"></span>) is <span id="aq_value"></span> <span id="aq_units"></span> last read on <span id="aq_date"></span>.
+    </p>
+    -->
+
+    <p class="summary-p">
+      The weather here in <span id="location"></span> is <span id="summary"></span> with a temperature of <span id="temperature"></span> &deg; F. <span id="aq-results"></span>.
     </p>
 
   <script src="sketch.js"></script>
