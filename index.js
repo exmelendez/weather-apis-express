@@ -1,6 +1,7 @@
 const express = require('express');
 const Datastore = require('nedb');
 const fetch = require('node-fetch');
+require('dotenv').config();
 
 const app = express();
 app.listen(3000, () => console.log('listening at 3000'));
@@ -37,7 +38,8 @@ app.get('/weather/:latlon', async (request, response) => {
   const lon = latlon[1];
   console.log(lat, lon);
 
-  const weather_url = `https://api.darksky.net/forecast/b45595dd5b4dac055bf17abc5aad62cd/${lat},${lon}`;
+  const api_key = process.env.API_KEY; //This grabs the API KEY variable stored in the .env file
+  const weather_url = `https://api.darksky.net/forecast/${api_key}/${lat},${lon}`;
   const weather_response = await fetch(weather_url);
   const weather_data = await weather_response.json();
 
