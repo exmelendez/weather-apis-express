@@ -11,12 +11,9 @@ async function getData() {
   const data = await response.json();
 
   for (item of data) {
+    const marker = await L.marker([item.lat, item.lon]).addTo(mymap);
 
-    const marker = L.marker([item.lat, item.lon]).addTo(mymap);
-
-    const txt = `The weather here in ___ is ${item.weather.summary} with a temperature of ${item.weather.temperature} &deg; F.
-    The concentration of particulate matter (${item.air.parameter}) is ${item.air.value} ${item.air.unit} last read on ${item.air.lastUpdated}.
-  `;
+    const txt = await `The weather here in ${item.locale} is ${item.weather.summary} with a temperature of ${item.weather.temperature}° F. The concentration of particulate matter (${item.air.parameter}) is ${item.air.value} ${item.air.unit} last read on ${item.air.lastUpdated}.`;
 
     marker.bindPopup(txt);
   }
