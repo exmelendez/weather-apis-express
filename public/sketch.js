@@ -31,14 +31,6 @@ if("geolocation" in navigator) {
     if(json.air_quality.results.length > 0) {
       air = json.air_quality.results[0].measurements[0];
 
-      /* Air quality HTML elements */
-      /*
-      document.getElementById('aq_parameter').textContent = air.parameter;
-      document.getElementById('aq_value').textContent = air.value;
-      document.getElementById('aq_units').textContent = air.unit;
-      document.getElementById('aq_date').textContent = air.lastUpdated;
-      */
-
       document.getElementById('aq-results').textContent = `The concentration of particulate matter (${air.parameter}) is ${air.value} ${air.unit} last read on ${air.lastUpdated}`;
     } else {
       throw 'no air quality results obtained from API';
